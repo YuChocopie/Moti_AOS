@@ -1,4 +1,4 @@
-package com.ofu.moti
+package com.yuchoco.moti
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

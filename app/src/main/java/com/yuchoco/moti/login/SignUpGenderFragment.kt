@@ -1,11 +1,11 @@
-package com.ofu.moti.login
+package com.yuchoco.moti.login
 
 import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.ofu.moti.BaseFragment
-import com.ofu.moti.R
-import com.ofu.moti.databinding.FragmentSignupGenderBinding
+import com.yuchoco.moti.BaseFragment
+import com.yuchoco.moti.R
+import com.yuchoco.moti.databinding.FragmentSignupGenderBinding
 
 class SignUpGenderFragment : BaseFragment<FragmentSignupGenderBinding>(R.layout
     .fragment_signup_gender){

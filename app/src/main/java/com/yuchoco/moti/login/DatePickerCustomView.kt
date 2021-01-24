@@ -1,10 +1,10 @@
-package com.ofu.moti.login
+package com.yuchoco.moti.login
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
-import com.ofu.moti.databinding.CustomDatePickerBinding
+import com.yuchoco.moti.databinding.CustomDatePickerBinding
 
 
 class DatePickerCustomView @JvmOverloads

@@ -1,14 +1,14 @@
-package com.ofu.moti.login
+package com.yuchoco.moti.login
 
 import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.ofu.moti.BaseFragment
-import com.ofu.moti.R
-import com.ofu.moti.databinding.FragmentSignupBirthdayBinding
+import com.yuchoco.moti.BaseFragment
+import com.yuchoco.moti.R
+import com.yuchoco.moti.databinding.FragmentSignupCompleteBinding
 
-class SignUpBirthdayFragment :
-    BaseFragment<FragmentSignupBirthdayBinding>(R.layout.fragment_signup_birthday) {
+class SignUpCompleteFragment :
+    BaseFragment<FragmentSignupCompleteBinding>(R.layout.fragment_signup_complete) {
 
     private val viewModel by viewModels<LoginViewModel>()
 
@@ -17,8 +17,8 @@ class SignUpBirthdayFragment :
         binding.viewModel = viewModel
         viewModel.signUpFragment.observe(
             viewLifecycleOwner, Observer<LoginViewModel.SignUpFragment> {
-                if (it == LoginViewModel.SignUpFragment.Complete) {
-                    (activity as LoginActivity?)?.changeFragment(SignUpCompleteFragment.newInstance())
+            if (it == LoginViewModel.SignUpFragment.EXIT) {
+                (activity as LoginActivity?)?.startMainActivity()
                 }
             })
         viewModel.popFragment.observe(viewLifecycleOwner, Observer<Unit> {
@@ -27,7 +27,7 @@ class SignUpBirthdayFragment :
     }
 
     companion object {
-        fun newInstance() = SignUpBirthdayFragment()
+        fun newInstance() = SignUpCompleteFragment()
     }
 
 }

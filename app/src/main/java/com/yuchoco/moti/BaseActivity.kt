@@ -1,4 +1,4 @@
-package com.ofu.moti
+package com.yuchoco.moti
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

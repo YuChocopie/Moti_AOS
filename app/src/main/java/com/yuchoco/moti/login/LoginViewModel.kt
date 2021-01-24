@@ -1,10 +1,10 @@
-package com.ofu.moti.login
+package com.yuchoco.moti.login
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import com.ofu.moti.BaseViewModel
+import com.yuchoco.moti.BaseViewModel
 
 class LoginViewModel :BaseViewModel() {
 

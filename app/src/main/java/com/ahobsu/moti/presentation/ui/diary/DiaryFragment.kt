@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +22,7 @@ class DiaryFragment :
     BaseFragment<FragmentDiaryBinding>(R.layout.fragment_diary) {
 
     private var listSize = 0
-    private var isRenewable = false
+    private var isRenewable = true
     private var isRenewableTop = true
     private var isRenewableBottom = true
 
@@ -30,14 +31,6 @@ class DiaryFragment :
             viewModelStore,
             DiaryViewModelFactory(Injection.provideAnswerRepository())
         ).get(DiaryViewModel::class.java)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private val diaryAdapter by lazy {
@@ -58,24 +51,30 @@ class DiaryFragment :
 
         val date = Calendar.getInstance()
         val datetime = SimpleDateFormat("yyyy.MM.DD", Locale.KOREA).format(date.time)
-        onChangeCalenderDate(datetime)
+        onChangeCalenderDate(datetime, isToday = true)
 
         binding.diaryRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                Log.e("test2", "isRenewable $isRenewable")
+                Log.e("test2", "isRenewableTop $isRenewableTop")
+                Log.e("test2", "isRenewableBottom $isRenewableBottom")
+
                 if (isRenewable) {
                     val lastVisibleItemPosition =
                         (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    Log.e("test2", "lastVisibleItemPosition: $lastVisibleItemPosition")
 
                     if (isRenewableBottom && lastVisibleItemPosition + 1 == listSize) {
+                        Log.e("test2", "바답ㄱ")
                         viewModel.onScrollEvent(false)
                         isRenewable = false
-                        Log.e("test1", "바닥 lastVisibleItemPosition $lastVisibleItemPosition")
+
                     }
                     if (isRenewableTop && lastVisibleItemPosition <= 3) {
-//                        viewModel.onScrollEvent(true)
+                        Log.e("test2", "천장dd")
+                        viewModel.onScrollEvent(true)
                         isRenewable = false
-                        Log.e("test2", "천장dd $lastVisibleItemPosition")
                     }
                 }
             }
@@ -84,6 +83,8 @@ class DiaryFragment :
         viewModel.diaryList.observe(viewLifecycleOwner) {
             diaryAdapter.submitList(it)
             listSize = it.size
+            isRenewable = true
+
             Log.e("listSize", " ::: ?  $listSize")
         }
         viewModel.selectedCalender.observe(viewLifecycleOwner) {
@@ -91,17 +92,17 @@ class DiaryFragment :
         }
         viewModel.writeDayList.observe(viewLifecycleOwner) {
             diaryAdapter.setWriteDayList(it)
-            isRenewable = true
         }
 
         viewModel.isRenewableTop.observe(viewLifecycleOwner) {
-            isRenewableTop = false
-            Log.e("바닥 isRenewableTop", " $isRenewableTop")
-
+            Log.e("top isRenewableTop", " $isRenewableTop")
+            isRenewableTop = it
+            isRenewable = true
         }
         viewModel.isRenewableBottom.observe(viewLifecycleOwner) {
-            isRenewableBottom = false
-            val deco = SpaceDecoration(300)
+            isRenewableBottom = it
+            isRenewable = true
+            val deco = SpaceDecoration(200)
             binding.diaryRecyclerView.addItemDecoration(deco)
             Log.e("바닥 isRenewableBottom", " $isRenewableBottom")
 
@@ -115,19 +116,24 @@ class DiaryFragment :
             parent: RecyclerView,
             state: RecyclerView.State
         ) {
+            Log.e("outRect.bottom1 "," "+outRect.bottom )
+
             super.getItemOffsets(outRect, view, parent, state)
             if (parent.getChildAdapterPosition(view) == listSize - 1) {
                 outRect.bottom += size
+                Log.e("outRect.bottom2 "," "+outRect.bottom )
+
+            } else {
+                outRect.bottom  = 0
             }
         }
     }
 
-    fun onChangeCalenderDate(date: String) {
-        viewModel.setDate(date)
+    fun onChangeCalenderDate(date: String, isToday: Boolean) {
+        viewModel.setDate(date, isToday)
     }
 
     private fun initRecyclerView() {
-        val deco = SpaceDecoration(300)
         binding.diaryRecyclerView.apply {
             adapter = diaryAdapter
         }

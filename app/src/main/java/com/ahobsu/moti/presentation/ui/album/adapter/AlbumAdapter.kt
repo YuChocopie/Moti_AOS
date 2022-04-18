@@ -32,7 +32,6 @@ class AlbumAdapter :
 
         fun bind(item: AlbumItemModel) {
             binding?.model = item
-            binding?.frameCards?.marginLeft
 
             val displayMetrics = DisplayMetrics()
             (binding?.frameCards?.context as Activity).windowManager.defaultDisplay.getMetrics(
